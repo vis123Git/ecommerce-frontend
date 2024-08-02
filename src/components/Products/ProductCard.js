@@ -1,4 +1,3 @@
-// src/components/Products/ProductCard.js
 import React, { useContext } from 'react';
 import { Card, CardMedia, CardContent, Typography, CardActions, Button } from '@mui/material';
 import { CartContext } from '../../context/CartContext';
@@ -25,6 +24,9 @@ const ProductCard = ({ product }) => {
         height="140"
         image={product.image}
         alt={product.title}
+        sx={{
+          objectFit: 'contain', 
+        }}
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
@@ -34,7 +36,7 @@ const ProductCard = ({ product }) => {
           {product.description}
         </Typography>
         <Typography variant="h6" color="text.primary">
-          ${product.price}
+         ₹{product.price}*
         </Typography>
       </CardContent>
       <CardActions>

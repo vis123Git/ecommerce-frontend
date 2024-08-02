@@ -1,4 +1,3 @@
-// src/components/Cart/Cart.js
 import React, { useContext } from 'react';
 import { Typography, Box, Button, Grid } from '@mui/material';
 import { CartContext } from '../../context/CartContext';
@@ -8,7 +7,6 @@ const Cart = () => {
   const { cart, clearCart } = useContext(CartContext);
 
   const handleCheckout = () => {
-    // Implement checkout logic
     alert('Proceeding to checkout...');
   };
 

@@ -1,6 +1,5 @@
-// src/context/AuthContext.js
 import React, { createContext, useState, useEffect } from 'react';
-import { loginUser } from '../utils/api'; // Add a function to fetch user data
+import { loginUser } from '../utils/api'; 
 
 export const AuthContext = createContext();
 
@@ -9,12 +8,10 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    console.log("token===",token);
     if (token) {
       // Fetch user data from the server
       loginUser()
         .then((userData) => {
-          console.log("userData.data====",userData.data);
           setUser(userData.data);
         })
         .catch((error) => {

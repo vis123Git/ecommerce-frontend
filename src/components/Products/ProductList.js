@@ -1,7 +1,6 @@
-// src/components/Products/ProductList.js
 import React, { useEffect, useState } from 'react';
 import { TextField, Select, MenuItem, InputLabel, FormControl, Grid, Typography, Box } from '@mui/material';
-import { fetchProducts } from '../../utils/api'; // Import API function
+import { fetchProducts } from '../../utils/api';
 import ProductCard from './ProductCard';
 
 const ProductList = () => {
@@ -13,11 +12,13 @@ const ProductList = () => {
   useEffect(() => {
     const loadProducts = async () => {
       try {
-        const products = await fetchProducts();
-        console.log("filteredProducts===",filteredProducts);
-        if(products && products?.length){
-          setProducts(products);
-          setFilteredProducts(products);
+        const products_data = await fetchProducts();
+        const status = products_data?.status
+        const data = products_data?.data
+
+        if(status && data?.length){
+          setProducts(data);
+          setFilteredProducts(data);
         }else{
           console.log('No products found');
           setProducts([]);

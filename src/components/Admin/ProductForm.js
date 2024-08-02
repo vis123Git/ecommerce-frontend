@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { TextField, Button, Box, Typography } from '@mui/material';
-import { createProduct, updateProduct } from '../../utils/api'; // Implement these functions
+import { createProduct, updateProduct } from '../../utils/api'; // Ensure these functions are imported correctly
 
 const ProductForm = ({ selectedProduct, onProductUpdate }) => {
   const [title, setTitle] = useState('');
@@ -13,23 +13,31 @@ const ProductForm = ({ selectedProduct, onProductUpdate }) => {
       setTitle(selectedProduct.title);
       setDescription(selectedProduct.description);
       setPrice(selectedProduct.price);
-      // Set image file input to null initially, it will be updated on file selection
-      setImage(null);
+      setImage(null); // Clear image selection when editing
     }
   }, [selectedProduct]);
 
   const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
+    if (e.target.files.length > 0) {
+      setImage(e.target.files[0]); // Ensure correct file selection
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const formData = new FormData();
     formData.append('title', title);
     formData.append('description', description);
     formData.append('price', price);
+
     if (image) {
-      formData.append('image', image);
+      formData.append('image', image); // Correctly append the image file
+    }
+
+    // Log FormData entries to ensure all fields are appended
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
     }
 
     try {
@@ -41,12 +49,14 @@ const ProductForm = ({ selectedProduct, onProductUpdate }) => {
         await createProduct(formData);
         alert('Product added successfully.');
       }
-      // Clear form fields
+
+      // Clear form fields after successful submission
       setTitle('');
       setDescription('');
       setPrice('');
       setImage(null);
     } catch (error) {
+      console.error('Error:', error);
       alert('Error saving product. Please try again.');
     }
   };
@@ -82,19 +92,12 @@ const ProductForm = ({ selectedProduct, onProductUpdate }) => {
           onChange={(e) => setPrice(e.target.value)}
           sx={{ mb: 2 }}
         />
-        <Button
-          variant="contained"
-          component="label"
-          fullWidth
-          sx={{ mb: 2 }}
-        >
-          {image ? image.name : 'Upload Image'}
-          <input
-            type="file"
-            hidden
-            onChange={handleImageChange}
-          />
-        </Button>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
+          style={{ marginBottom: '16px' }}
+        />
         <Button variant="contained" color="primary" type="submit" fullWidth>
           {selectedProduct ? 'Update Product' : 'Add Product'}
         </Button>

@@ -12,16 +12,16 @@ const api = axios.create({
 // Add a request interceptor to include token in headers if available
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('token');
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers.Authorization = `Bearer ${token}`; // Correctly append token
     }
     return config;
   },
   (error) => {
     return Promise.reject(error);
   }
-);
+)
 
 // Login function
 export const loginUser = async (email, password) => {
@@ -72,8 +72,12 @@ export const checkoutCart = async (cart, address) => {
 };
 
 // Create a new product (Admin only)
-export const createProduct = async (productData) => {
-  const response = await api.post('/api/admin/product', productData);
+export const createProduct = async (formData) => {
+  const response = await api.post('/api/admin/product', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data', // Ensure multipart/form-data is used
+    },
+  });
   return response.data; // Assuming response data is the created product
 };
 
