@@ -1,32 +1,49 @@
+// src/components/Cart/Cart.js
 import React, { useContext } from 'react';
+import { Typography, Box, Button, Grid } from '@mui/material';
 import { CartContext } from '../../context/CartContext';
+import CartItem from './CartItem';
 
 const Cart = () => {
   const { cart, clearCart } = useContext(CartContext);
 
   const handleCheckout = () => {
-    // Implement checkout logic here, such as sending the cart data to the backend
-    alert('Checkout successful');
-    clearCart();
+    // Implement checkout logic
+    alert('Proceeding to checkout...');
   };
 
   return (
-    <div>
-      <h2>Your Cart</h2>
-      {cart.length === 0 ? (
-        <p>Your cart is empty</p>
-      ) : (
-        <div>
-          {cart.map((item, index) => (
-            <div key={index}>
-              <h3>{item.title}</h3>
-              <p>${item.price}</p>
-            </div>
-          ))}
-          <button onClick={handleCheckout}>Checkout</button>
-        </div>
-      )}
-    </div>
+    <Box p={3}>
+      <Typography variant="h4" gutterBottom>
+        Cart
+      </Typography>
+      <Grid container spacing={3}>
+        {cart.map((item) => (
+          <Grid item xs={12} key={item._id}>
+            <CartItem item={item} />
+          </Grid>
+        ))}
+      </Grid>
+      <Box mt={3}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleCheckout}
+          disabled={cart.length === 0}
+        >
+          Checkout
+        </Button>
+        <Button
+          variant="outlined"
+          color="secondary"
+          onClick={clearCart}
+          disabled={cart.length === 0}
+          sx={{ ml: 2 }}
+        >
+          Clear Cart
+        </Button>
+      </Box>
+    </Box>
   );
 };
 

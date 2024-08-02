@@ -1,37 +1,28 @@
-// src/components/Auth/Login.js
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TextField, Button, Box, Typography } from '@mui/material';
-import { loginUser } from '../../utils/api';
-import { AuthContext } from '../../context/AuthContext';
+import { signupUser } from '../../utils/api'; 
 
-const Login = () => {
+const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { login, user } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const data = await loginUser(email, password);
-      login(data.data);
-      // user = data.data
-      alert('Login successful');
-      if(data.data.role=="superadmin"){
-        navigate('/admin');
-      }else{
-        navigate('/');
-      }
+      await signupUser(email, password);
+      alert('Signup successful. Please log in.');
+      navigate('/login');
     } catch (error) {
-      alert('Login failed. Please check your credentials.');
+      alert('Signup failed. Please try again.');
     }
   };
 
   return (
     <Box p={3} maxWidth={400} mx="auto">
       <Typography variant="h4" gutterBottom>
-        Login
+        Sign Up
       </Typography>
       <form onSubmit={handleSubmit}>
         <TextField
@@ -52,17 +43,18 @@ const Login = () => {
           sx={{ mb: 2 }}
         />
         <Button variant="contained" color="primary" type="submit" fullWidth>
-          Login
+          Sign Up
         </Button>
       </form>
+
       <Typography variant="body2" align="center" sx={{ mt: 2 }}>
-        Don't have an account?{' '}
-        <Button color="secondary" onClick={() => navigate('/signup')}>
-          Sign up
+        Already have an account?{' '}
+        <Button color="secondary" onClick={() => navigate('/login')}>
+          Login
         </Button>
       </Typography>
     </Box>
   );
 };
 
-export default Login;
+export default Signup;
